@@ -25,9 +25,6 @@ def FindUser(username, password):
       myresult = mycursor.fetchall()
 
       for user in myresult:
-            print(user[0])
-            print(user[1])
-            print(user[2])
             return user[2]
       
       return -1
