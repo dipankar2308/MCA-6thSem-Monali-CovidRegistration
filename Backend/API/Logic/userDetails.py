@@ -58,4 +58,27 @@ def Register(requestData):
             "message": "Mismatch in User-id and Username. Please verify the data and try again."
         }
 
-    
+def GetProfile(username, id):
+    isUserExists = dbService.FindUserWithID(username, id)
+    if isUserExists == 1:
+        userProfile = dbService.FindUserRegistration(id)
+
+        if userProfile == None:
+            return {
+                "success": False,
+                "message": "No Records found"
+            }
+        
+        return {
+            "success": True,
+            "profile": userProfile
+        }
+    elif isUserExists == -1:
+        return {
+            "success": False,
+            "message": "No records in credentials found."
+        }
+    return {
+            "success": False,
+            "message": "Username and userId fields are mismatched."
+        }

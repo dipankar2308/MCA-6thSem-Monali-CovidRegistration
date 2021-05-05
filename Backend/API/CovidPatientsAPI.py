@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
-from Logic import Authenticate, RegisterUser, UpdateUserProfile
+from Logic import login, userDetails, userCredentials
 import json
 
 app = Flask(__name__)
@@ -10,7 +10,7 @@ app = Flask(__name__)
 def hello():
     return jsonify({'result': "Hello World!"})
 
-@app.route('/user/login', methods=['POST'])
+@app.route('/user/auth/login', methods=['POST'])
 def loginMember():
     requestData = (json.loads(request.data))
     
@@ -20,7 +20,7 @@ def loginMember():
     except:
         return jsonify({"message": "One or more parameters is missing from the request"}), 500
 
-    result = Authenticate.Auth(requestData['username'], requestData['password'])
+    result = login.Auth(requestData['username'], requestData['password'])
 
     if  result["success"]:
         return jsonify(result)
@@ -29,7 +29,7 @@ def loginMember():
             "success": False
         }), 401
 
-@app.route('/user/register', methods=['POST'])
+@app.route('/user/auth/register', methods=['POST'])
 def registerUser():
     requestData = (json.loads(request.data))
     
@@ -39,7 +39,7 @@ def registerUser():
     except:
         return jsonify({"message": "One or more parameters is missing from the request"}), 500
 
-    result = RegisterUser.Register(requestData['username'], requestData['password'])
+    result = userCredentials.Register(requestData['username'], requestData['password'])
 
     return jsonify(result)
 
@@ -60,12 +60,26 @@ def updateProfile(username):
         if(requestData['username'] != username):
             return jsonify({"message": "details of {0} expected, but request contains '{1}'".format(username, requestData['username'])})
 
-        success = UpdateUserProfile.Register(requestData)
+        success = userDetails.Register(requestData)
     except NameError as err:
         print(err)
         return jsonify({"success": False}), 500
 
     return jsonify(success)
+
+@app.route('/user/profile/<username>', methods=['GET'])
+def getUserProfile(username):
+    requestUsername = json.loads(request.data)
+
+    if isStringNullorEmpty(str(requestUsername['userId'])):
+        return jsonify({"message": "ID parameter is missing from the Request Body"})
+
+    profileResponse = userDetails.GetProfile(username, requestUsername['userId'])
+
+    if profileResponse['success']:
+        return profileResponse
+    
+    return profileResponse, 400
 
 def isStringNullorEmpty(str):
     if(not (str and str.strip())):
