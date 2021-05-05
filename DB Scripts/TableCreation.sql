@@ -29,3 +29,20 @@ CREATE TABLE `patients` (
   PRIMARY KEY (`idpatients`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+INSERT INTO `covid19donor`.`credentials`
+(`userId`,
+`password`,
+`memberId`)
+VALUES
+('dsutradhar',
+'password',
+1);
+
+INSERT INTO `covid19donor`.`credentials`
+(`userId`,
+`password`,
+`memberId`)
+VALUES
+('monali',
+'password1',
+1);
