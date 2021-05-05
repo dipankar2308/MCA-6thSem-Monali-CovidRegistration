@@ -1,22 +1,10 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
-from Logic import Authenticate, RegisterUser
+from Logic import Authenticate, RegisterUser, UpdateUserProfile
 import json
-app = Flask(__name__)
 
-empDB=[
- {
- 'id':'101',
- 'name':'Dipankar S',
- 'title':'Technical Leader'
- },
- {
- 'id':'201',
- 'name':'Monali S',
- 'title':'Sr Software Engineer'
- }
- ]
+app = Flask(__name__)
 
 @app.route("/")
 def hello():
@@ -58,6 +46,30 @@ def registerUser():
     result = RegisterUser.Register(requestData['username'], requestData['password'])
 
     return jsonify(result)
+
+@app.route('/user/profile/<username>', methods=['POST'])
+def updateProfile(username):
+    requestData = (json.loads(request.data))
+
+    try:
+        if(isStringNullorEmpty(requestData['username']) or 
+            isStringNullorEmpty(requestData['userId']) or 
+            isStringNullorEmpty(requestData['name']) or 
+            isStringNullorEmpty(requestData['area']) or 
+            isStringNullorEmpty(requestData['city']) or 
+            isStringNullorEmpty(requestData['phoneNumber']) or 
+            isStringNullorEmpty(requestData['bloodGroup'])):
+            return jsonify({"message": "all fields must be sent - username, userId, name, area, city, phoneNumber, bloodGroup"}), 400
+
+        if(requestData['username'] != username):
+            return jsonify({"message": "details of {0} expected, but request contains '{1}'".format(username, requestData['username'])})
+
+        success = UpdateUserProfile.Register(requestData)
+    except NameError as err:
+        print(err)
+        return jsonify({"success": False}), 500
+
+    return jsonify(success)
 
 def isStringNullorEmpty(str):
     if(not (str and str.strip())):
