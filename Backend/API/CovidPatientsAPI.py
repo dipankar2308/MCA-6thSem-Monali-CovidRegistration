@@ -10,10 +10,6 @@ app = Flask(__name__)
 def hello():
     return jsonify({'result': "Hello World!"})
 
-@app.route('/employees',methods=['GET'])
-def getAllEmp():
-    return jsonify({'emps':empDB})
-
 @app.route('/user/login', methods=['POST'])
 def loginMember():
     requestData = (json.loads(request.data))
