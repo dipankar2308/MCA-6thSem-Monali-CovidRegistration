@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
-from Logic import dbService, Authenticate
+from Logic import Authenticate, RegisterUser
 import json
 app = Flask(__name__)
 
@@ -20,14 +20,13 @@ empDB=[
 
 @app.route("/")
 def hello():
-    dbService.ReadData()
     return jsonify({'result': "Hello World!"})
 
 @app.route('/employees',methods=['GET'])
 def getAllEmp():
     return jsonify({'emps':empDB})
 
-@app.route('/login', methods=['POST'])
+@app.route('/user/login', methods=['POST'])
 def loginMember():
     requestData = (json.loads(request.data))
     
@@ -45,6 +44,20 @@ def loginMember():
         return jsonify({
             "success": False
         }), 401
+
+@app.route('/user/register', methods=['POST'])
+def registerUser():
+    requestData = (json.loads(request.data))
+    
+    try:    
+        if(isStringNullorEmpty(requestData['username']) or isStringNullorEmpty(requestData['password'])):
+            return jsonify({"message": "One or more parameters is missing from the request"}), 500
+    except:
+        return jsonify({"message": "One or more parameters is missing from the request"}), 500
+
+    result = RegisterUser.Register(requestData['username'], requestData['password'])
+
+    return jsonify(result)
 
 def isStringNullorEmpty(str):
     if(not (str and str.strip())):

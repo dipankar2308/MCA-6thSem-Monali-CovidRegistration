@@ -1,8 +1,10 @@
-from Logic import dbService
+from Logic import dbService, Encode
 import json
 
 def Auth(username, password):
-    result = dbService.FindUser(username, password)
+    encodedString = Encode.encodeString(password)
+    result = dbService.FindUser(username, encodedString)
+    
     if result >= 0:
         return {
             "memberId": result,
