@@ -8,11 +8,14 @@ CREATE TABLE `credentials` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `member` (
-  `idmember` int NOT NULL,
+  `memberId` int NOT NULL,
   `name` varchar(100) NOT NULL,
-  `address` varchar(100) NOT NULL,
-  `phoneNumber` varchar(45) NOT NULL,
-  `bloodGroup` varchar(10) NOT NULL
+  `area` varchar(100) NOT NULL,
+  `phoneNumber` varchar(45) DEFAULT NULL,
+  `bloodGroup` varchar(10) NOT NULL,
+  `city` varchar(45) NOT NULL,
+  `isActive` tinyint DEFAULT NULL,
+  PRIMARY KEY (`memberId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `donors` (
@@ -35,7 +38,7 @@ INSERT INTO `covid19donor`.`credentials`
 `memberId`)
 VALUES
 ('dsutradhar',
-'password',
+'cGFzc3dvcmQ=',
 1);
 
 INSERT INTO `covid19donor`.`credentials`
@@ -44,5 +47,39 @@ INSERT INTO `covid19donor`.`credentials`
 `memberId`)
 VALUES
 ('monali',
-'password1',
+'cGFzc3dvcmQ=',
+1);
+
+INSERT INTO `covid19donor`.`member`
+(`memberId`,
+`name`,
+`area`,
+`phoneNumber`,
+`bloodGroup`,
+`city`,
+`isActive`)
+VALUES
+(1,
+'Monali Sutradhar',
+'Chhend Area',
+'8055425098',
+'A+',
+'Rourkela',
+1);
+
+INSERT INTO `covid19donor`.`member`
+(`memberId`,
+`name`,
+`area`,
+`phoneNumber`,
+`bloodGroup`,
+`city`,
+`isActive`)
+VALUES
+(1,
+'Dipankar Sutradhar',
+'Sector Area',
+'8055425098',
+'A+',
+'Rourkela',
 1);
