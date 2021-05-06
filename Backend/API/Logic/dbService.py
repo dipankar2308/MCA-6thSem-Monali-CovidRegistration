@@ -1,5 +1,7 @@
 import mysql.connector
+from mysql.connector.errors import Error
 from Logic import Encode, Decode
+import datetime
 
 def openConnection():
       mydb = mysql.connector.connect(
@@ -17,6 +19,14 @@ insertUsersQuery = "INSERT INTO `covid19donor`.`credentials` (`userId`, `passwor
 insertUserProfileQuery = "INSERT INTO `covid19donor`.`member` (`memberId`,`name`,`area`,`phoneNumber`,`bloodGroup`,`city`,`isActive`) VALUES (%s,%s,%s,%s,%s,%s,1)"
 updateUserProfileQuery = "UPDATE `covid19donor`.`member` SET `memberId` = %s, `name` = %s, `area` = %s, `phoneNumber` = %s,`bloodGroup` = %s,`city` = %s, `isActive` = 1 WHERE memberId = %s;"
 findUserRegistrationQuery = "SELECT * FROM covid19donor.member where memberId like '{0}'"
+findUserStatusFromPatient = "SELECT * FROM covid19donor.patients where memberId like '{0}' ORDER BY idpatients DESC LIMIT 1"
+finduserStatusFromDonor = "SELECT * FROM covid19donor.donors where memberId like '{0}' ORDER BY iddonors DESC LIMIT 1"
+findLastDonorId = "SELECT max(iddonors) as id from covid19donor.donors"
+findLastPatientId = "SELECT max(idpatients) as id from covid19donor.patients"
+insertDonorsQuery = "INSERT INTO `covid19donor`.`donors` (`iddonors`, `memberId`, `dateOfRequest`) VALUES ('{0}','{1}','{2}');"
+insertPatientsQuery = "INSERT INTO `covid19donor`.`patients` (`idpatients`, `memberId`, `dateOfRequest`) VALUES ('{0}','{1}','{2}');"
+deletePatientsQuery = "DELETE FROM `covid19donor`.`patients` WHERE memberId = '{0}'"
+deleteDonorsQuery = "DELETE FROM `covid19donor`.`donors` WHERE memberId = '{0}'"
 
 def FindUser(username, password):
       mydb = openConnection()
@@ -83,10 +93,12 @@ def RegisterUserInDB(username, password):
       try:
             mycursor.execute(insertUsersQuery, values)
             mydb.commit()
-      except mysql.connector.IntegrityError:
+      except mysql.connector.IntegrityError as err:
+            mydb.rollback()
             # print("Error received: {0}".format(err))
             return -999
       except:
+            mydb.rollback()
             return -1
       mydb.close()
       return latestUserId
@@ -149,3 +161,159 @@ def FindUserRegistration(id):
       except mysql.connector.Error as err:
             print("Error in finding User Registration: {0}".format(err))
             return None
+
+# Get the current user status whether patient or donor
+def GetUserStatus(userId):
+      mydb = openConnection()
+      myCursor = mydb.cursor()
+
+      try:
+            myCursor.execute(findUserStatusFromPatient.format(userId))
+            results = myCursor.fetchall()
+            row = None
+
+            for iddonors, memberId, dateOfRequest in results:
+                  row = {
+                        'id': memberId,
+                        'dateOfRequest': dateOfRequest,
+                        'status': 'patient'
+                  }
+                  print (row)
+            
+            if row == None:
+                  myCursor.execute(finduserStatusFromDonor.format(userId))
+                  results = myCursor.fetchall()
+                  for iddonors, memberId, dateOfRequest in results:
+                      row = {
+                        'id': memberId,
+                        'dateOfRequest': dateOfRequest,
+                        'status': 'donor'
+                  }
+                  print (row)
+
+            return row
+
+      except mysql.connector.Error as err:
+            print("Error in finding User Registration: {0}".format(err))
+            return None
+
+# Set the current user status as patient
+def SetUserStatusPatient(userId):
+      mydb = openConnection()
+      mycursor = mydb.cursor()
+
+      findRecentMemberIdFormat = findLastPatientId
+      mycursor.execute(findRecentMemberIdFormat)
+      myresult = mycursor.fetchall()
+
+      lastId = 0
+
+      for id in myresult:
+            lastId = id[0]
+
+      if lastId is None:
+            lastId = 0
+
+      lastId += 1
+
+      print("{0} is the highest patient ID".format(lastId))
+
+      dateToday = datetime.datetime.now().strftime("%y-%m-%d")
+
+      try: 
+            finalQuery = insertPatientsQuery.format(lastId, userId, dateToday)
+            print(finalQuery)
+            mycursor.execute(finalQuery)
+            mydb.commit()
+      except mysql.connector.IntegrityError:
+            print("Error received in SetUserStatusPatient 1")
+            mydb.rollback()
+            return False
+      except Error as err:
+            print("Error received in SetUserStatusPatient 2: {0}".format(err))
+            mydb.rollback()
+            return False
+      mydb.close()
+      
+      return True
+
+# Set the current user status as Donor
+def SetUserStatusDonor(userId):
+      mydb = openConnection()
+      mycursor = mydb.cursor()
+
+      findRecentMemberIdFormat = findLastDonorId
+      mycursor.execute(findRecentMemberIdFormat)
+      myresult = mycursor.fetchall()
+
+      lastId = 0
+
+      for id in myresult:
+            lastId = id[0]
+      
+      if lastId is None:
+            lastId = 0
+
+      lastId += 1
+
+      print("{0} is the highest donor ID".format(lastId))
+
+      dateToday = datetime.datetime.now().strftime("%y-%m-%d")
+      
+      try:
+            finalQuery = insertDonorsQuery.format(lastId, userId, dateToday)
+            print(finalQuery)
+            mycursor.execute(finalQuery)
+            mydb.commit()
+            print("Insert query committed")
+      except mysql.connector.IntegrityError:
+            print("Error received in SetUserStatusDonor 1")
+            mydb.rollback()
+            return False
+      except Error as err:
+            print("Error received in SetUserStatusDonor 2: {0}".format(err))
+            mydb.rollback()
+            return False
+      mydb.close()
+      
+      return True
+
+def DeletePatient(userId):
+      mydb = openConnection()
+      mycursor = mydb.cursor()
+
+      try:
+            finalQuery = deletePatientsQuery.format(userId)
+            print(finalQuery)
+            mycursor.execute(finalQuery)
+            mydb.commit()
+      except mysql.connector.IntegrityError:
+            print("Error received in DeletePatient 1")
+            mydb.rollback()
+            return False
+      except Error as err:
+            print("Error received in DeletePatient 2: {0}".format(err))
+            mydb.rollback()
+            return False
+      mydb.close()
+      return True
+
+def DeleteDonor(userId):
+      mydb = openConnection()
+      mycursor = mydb.cursor()
+
+      try:
+            finalQuery = deleteDonorsQuery.format(userId)
+            print(finalQuery)
+            mycursor.execute(finalQuery)
+            mydb.commit()
+      except mysql.connector.IntegrityError:
+            print("Error received in DeleteDonor 1")
+            mydb.rollback()
+            return False
+      except Error as err:
+            print("Error received in DeleteDonor 2: {0}".format(err))
+            mydb.rollback()
+            return False
+      mydb.close()
+      return True

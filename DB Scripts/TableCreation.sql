@@ -21,14 +21,14 @@ CREATE TABLE `covid19donor`.`member` (
 CREATE TABLE `covid19donor`.`donors` (
   `iddonors` int NOT NULL,
   `memberId` int NOT NULL,
-  `dateOfRequest` datetime NOT NULL,
+  `dateOfRequest` varchar(20) NOT NULL,
   PRIMARY KEY (`iddonors`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `covid19donor`.`patients` (
   `idpatients` int NOT NULL,
   `memberId` int NOT NULL,
-  `dateOfRequest` datetime NOT NULL,
+  `dateOfRequest` varchar(20) NOT NULL,
   PRIMARY KEY (`idpatients`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -76,7 +76,7 @@ INSERT INTO `covid19donor`.`member`
 `city`,
 `isActive`)
 VALUES
-(1,
+(2,
 'Dipankar Sutradhar',
 'Sector Area',
 '8055425098',

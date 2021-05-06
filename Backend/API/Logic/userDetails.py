@@ -1,5 +1,4 @@
 from Logic import dbService
-import json
 
 def Register(requestData):
     result = dbService.FindUserWithID(requestData['username'], requestData['userId'])

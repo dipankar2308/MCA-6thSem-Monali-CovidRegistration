@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
-from Logic import login, userDetails, userCredentials
+from Logic import login, userDetails, userCredentials, userStatus
 import json
 
 app = Flask(__name__)
@@ -80,6 +80,43 @@ def getUserProfile(username):
         return profileResponse
     
     return profileResponse, 400
+
+@app.route('/user/profile/<username>/status', methods=['GET'])
+def getMemberStatus(username):
+    requestData = json.loads(request.data)
+
+    if requestData['userId'] == None or isStringNullorEmpty(str(requestData['userId'])):
+        return jsonify({
+            "success": False,
+            "message": "userId is missing in the request"
+        }), 400
+
+    result = userStatus.getuserStatusInformation(username, requestData['userId'])
+
+    return jsonify(result)
+
+@app.route('/user/profile/<username>/status', methods=['POST'])
+def setMemberStatus(username):
+    # {
+    #     "id": 1,
+    #     "memberStatus": "patient", // status = patient/donor
+    # }
+    requestData = json.loads(request.data)
+
+    if ('userId' not in requestData or 
+        requestData['userId'] == None or 
+        isStringNullorEmpty(str(requestData['userId'])) or 
+        'memberStatus' not in requestData or
+        requestData['memberStatus'] == None or 
+        isStringNullorEmpty(str(requestData['memberStatus']))):
+        return jsonify({
+            "success": False,
+            "message": "One or more fields is missing in the request"
+        }), 400
+    
+    result = userStatus.saveUserInformation(username, requestData['userId'], requestData['memberStatus'])
+
+    return jsonify(result)
 
 def isStringNullorEmpty(str):
     if(not (str and str.strip())):
