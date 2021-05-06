@@ -81,3 +81,28 @@ def GetProfile(username, id):
             "success": False,
             "message": "Username and userId fields are mismatched."
         }
+
+def GetProfileById(username, id, memberId):
+    isUserExists = dbService.FindUserWithID(username, id)
+    if isUserExists == 1:
+        userProfile = dbService.FindUserRegistration(memberId)
+
+        if userProfile == None:
+            return {
+                "success": False,
+                "message": "No Records found"
+            }
+        
+        return {
+            "success": True,
+            "profile": userProfile
+        }
+    elif isUserExists == -1:
+        return {
+            "success": False,
+            "message": "No records in credentials found."
+        }
+    return {
+            "success": False,
+            "message": "Username and userId fields are mismatched."
+        }

@@ -147,7 +147,23 @@ def getAllPatientsWithGroup(bloodGroup):
                 "message": 'One or more request parameters missing in request'
             }), 400
 
-    result = data.GetAllPatients(requestData['username'], requestData['userId'], bloodGroup)
+    result = data.GetAllPatientsWithGroup(requestData['username'], requestData['userId'], bloodGroup)
+    return jsonify(result)
+
+@app.route('/patients/profile/<id>', methods=['GET'])
+def getPatientProfileById(id):
+    requestData = json.loads(request.data)
+
+    if ('userId' not in requestData or 
+        isStringNullorEmpty(str(requestData['userId'])) or 
+        'username' not in requestData or 
+        isStringNullorEmpty(str(requestData['username']))):
+            return jsonify({
+                "success": False,
+                "message": 'One or more request parameters missing in request'
+            }), 400
+
+    result = data.GetAllPatientsWithId(str(requestData['username']), str(requestData['userId']), id)
     return jsonify(result)
 
 @app.route('/data/bloodGroups', methods=['GET'])
@@ -178,7 +194,7 @@ def getAllDonors():
                 "message": 'One or more request parameters missing in request'
             })
 
-    result = donors.GetAllDonors(requestData['username'], requestData['userId'])
+    result = data.GetAllDonors(requestData['username'], requestData['userId'])
     return jsonify(result)
 
 @app.route('/donors/<bloodGroup>', methods= ['GET'])
@@ -194,7 +210,23 @@ def getAllDonorsWithGroup(bloodGroup):
                 "message": 'One or more request parameters missing in request'
             })
 
-    result = donors.GetAllDonors(requestData['username'], requestData['userId'], bloodGroup)
+    result = data.GetAllDonorsWithGroup(requestData['username'], requestData['userId'], bloodGroup)
+    return jsonify(result)
+
+@app.route('/donors/profile/<id>', methods=['GET'])
+def getDonorProfileById(id):
+    requestData = json.loads(request.data)
+
+    if ('userId' not in requestData or 
+        isStringNullorEmpty(str(requestData['userId'])) or 
+        'username' not in requestData or 
+        isStringNullorEmpty(str(requestData['username']))):
+            return jsonify({
+                "success": False,
+                "message": 'One or more request parameters missing in request'
+            }), 400
+
+    result = data.GetAllDonorsWithId(str(requestData['username']), str(requestData['userId']), id)
     return jsonify(result)
 
 def isStringNullorEmpty(str):
