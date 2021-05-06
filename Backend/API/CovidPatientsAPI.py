@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
-from Logic import login, userDetails, userCredentials, userStatus
+from Logic import login, userDetails, userCredentials, userStatus, patients, donors
 import json
 
 app = Flask(__name__)
@@ -116,6 +116,38 @@ def setMemberStatus(username):
     
     result = userStatus.saveUserInformation(username, requestData['userId'], requestData['memberStatus'])
 
+    return jsonify(result)
+
+@app.route('/patients', methods= ['GET'])
+def getAllPatients():
+    requestData = json.loads(request.data)
+
+    if ('userId' not in requestData or 
+        isStringNullorEmpty(str(requestData['userId'])) or 
+        'username' not in requestData or 
+        isStringNullorEmpty(str(requestData['username']))):
+            return jsonify({
+                "success": False,
+                "message": 'One or more request parameters missing in request'
+            })
+
+    result = patients.GetAllPatients(requestData['username'], requestData['userId'])
+    return jsonify(result)
+
+@app.route('/donors', methods= ['GET'])
+def getAllDonors():
+    requestData = json.loads(request.data)
+
+    if ('userId' not in requestData or 
+        isStringNullorEmpty(str(requestData['userId'])) or 
+        'username' not in requestData or 
+        isStringNullorEmpty(str(requestData['username']))):
+            return jsonify({
+                "success": False,
+                "message": 'One or more request parameters missing in request'
+            })
+
+    result = donors.GetAllDonors(requestData['username'], requestData['userId'])
     return jsonify(result)
 
 def isStringNullorEmpty(str):
