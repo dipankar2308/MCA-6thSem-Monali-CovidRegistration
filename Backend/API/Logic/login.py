@@ -1,5 +1,5 @@
-from Logic import dbService, Encode
-import json
+from Logic.DB import dbService
+from Logic.Utils import Encode
 
 def Auth(username, password):
     encodedString = Encode.encodeString(password)

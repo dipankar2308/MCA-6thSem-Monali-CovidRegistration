@@ -1,4 +1,5 @@
-from Logic import dbService, userDetails
+from Logic.DB import dbService
+from Logic import userDetails
 
 def saveUserInformation(username, id, status):
     verifyUser = userDetails.GetProfile(username, id)

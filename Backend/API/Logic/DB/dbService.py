@@ -1,6 +1,5 @@
 import mysql.connector
 from mysql.connector.errors import Error
-from Logic import Encode, Decode
 import datetime
 
 def openConnection():
