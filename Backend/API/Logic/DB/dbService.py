@@ -27,7 +27,9 @@ insertPatientsQuery = "INSERT INTO `covid19donor`.`patients` (`idpatients`, `mem
 deletePatientsQuery = "DELETE FROM `covid19donor`.`patients` WHERE memberId = '{0}'"
 deleteDonorsQuery = "DELETE FROM `covid19donor`.`donors` WHERE memberId = '{0}'"
 getAllPatientsQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM covid19donor.patients p left join covid19donor.member m on p.memberId = m.memberId"
+getAllPatientsBloodQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city from covid19donor.donors p left join covid19donor.member m on p.memberId = m.memberId where m.bloodGroup like '{0}'"
 getAllDonorQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM covid19donor.donors p left join covid19donor.member m on p.memberId = m.memberId"
+getAllDonorBloodQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM covid19donor.donors p left join covid19donor.member m on p.memberId = m.memberId where m.bloodGroup like '{0}'"
 
 def FindUser(username, password):
       mydb = openConnection()
@@ -237,6 +239,31 @@ def GetAllPatients():
 
       return patients
 
+#Get All Patients
+def GetAllPatients(bloodGroup):
+      mydb = openConnection()
+      mycursor = mydb.cursor()
+      patients = []
+      
+      try:
+            mycursor.execute(getAllPatientsBloodQuery.format(bloodGroup))
+            myresult = mycursor.fetchall()
+            mydb.close()
+
+            for userId, name, area, bloodgroup, city in myresult:
+                  patients.append({
+                        'userId': userId,
+                        'name': name,
+                        'area': area,
+                        'bloodGroup': bloodgroup,
+                        'city': city
+                  })
+      except:
+            patients = None
+            print("Error in Get All Patients DB Call")
+
+      return patients
+
 #Get All Donors
 def GetAllDonors():
       mydb = openConnection()
@@ -245,6 +272,35 @@ def GetAllDonors():
       
       try:
             mycursor.execute(getAllDonorQuery)
+            myresult = mycursor.fetchall()
+            
+            mydb.close()
+            donors = []
+
+            for userId, name, area, bloodgroup, city in myresult:
+                  donors.append({
+                        'userId': userId,
+                        'name': name,
+                        'area': area,
+                        'bloodGroup': bloodgroup,
+                        'city': city
+                  })
+
+      except:
+            donors = None
+            print("Error in Get All Patients DB Call")            
+            mydb.close()
+
+      return donors
+
+#Get All Donors
+def GetAllDonors(bloodGroup):
+      mydb = openConnection()
+      mycursor = mydb.cursor()
+      donors = []
+      
+      try:
+            mycursor.execute(getAllDonorBloodQuery.format(bloodGroup))
             myresult = mycursor.fetchall()
             
             mydb.close()

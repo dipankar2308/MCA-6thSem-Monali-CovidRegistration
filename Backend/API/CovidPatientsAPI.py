@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
-from Logic import login, userDetails, userCredentials, userStatus, patients, donors
+from Logic import login, userDetails, userCredentials, userStatus, data
 import json
 
 app = Flask(__name__)
@@ -129,10 +129,41 @@ def getAllPatients():
             return jsonify({
                 "success": False,
                 "message": 'One or more request parameters missing in request'
-            })
+            }), 400
 
-    result = patients.GetAllPatients(requestData['username'], requestData['userId'])
+    result = data.GetAllPatients(requestData['username'], requestData['userId'])
     return jsonify(result)
+
+@app.route('/patients/<bloodGroup>', methods= ['GET'])
+def getAllPatientsWithGroup(bloodGroup):
+    requestData = json.loads(request.data)
+
+    if ('userId' not in requestData or 
+        isStringNullorEmpty(str(requestData['userId'])) or 
+        'username' not in requestData or 
+        isStringNullorEmpty(str(requestData['username']))):
+            return jsonify({
+                "success": False,
+                "message": 'One or more request parameters missing in request'
+            }), 400
+
+    result = data.GetAllPatients(requestData['username'], requestData['userId'], bloodGroup)
+    return jsonify(result)
+
+@app.route('/data/bloodGroups', methods=['GET'])
+def getAllBloodGroups():
+    requestData = json.loads(request.data)
+
+    if ('userId' not in requestData or 
+        isStringNullorEmpty(str(requestData['userId'])) or 
+        'username' not in requestData or 
+        isStringNullorEmpty(str(requestData['username']))):
+            return jsonify({
+                "success": False,
+                "message": 'One or more request parameters missing in request'
+            }), 400
+    
+    return jsonify(data.getAllBloodGroups(requestData['username'], requestData['userId']))
 
 @app.route('/donors', methods= ['GET'])
 def getAllDonors():
@@ -148,6 +179,22 @@ def getAllDonors():
             })
 
     result = donors.GetAllDonors(requestData['username'], requestData['userId'])
+    return jsonify(result)
+
+@app.route('/donors/<bloodGroup>', methods= ['GET'])
+def getAllDonorsWithGroup(bloodGroup):
+    requestData = json.loads(request.data)
+
+    if ('userId' not in requestData or 
+        isStringNullorEmpty(str(requestData['userId'])) or 
+        'username' not in requestData or 
+        isStringNullorEmpty(str(requestData['username']))):
+            return jsonify({
+                "success": False,
+                "message": 'One or more request parameters missing in request'
+            })
+
+    result = donors.GetAllDonors(requestData['username'], requestData['userId'], bloodGroup)
     return jsonify(result)
 
 def isStringNullorEmpty(str):
