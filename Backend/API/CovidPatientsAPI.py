@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
-from Logic import login, userDetails, userCredentials, userStatus, data
+from Logic import login, userDetails, userStatus, data
 import json
 
 app = Flask(__name__)
@@ -39,7 +39,7 @@ def registerUser():
     except:
         return jsonify({"message": "One or more parameters is missing from the request"}), 500
 
-    result = userCredentials.Register(requestData['username'], requestData['password'])
+    result = login.Register(requestData['username'], requestData['password'])
 
     return jsonify(result)
 
