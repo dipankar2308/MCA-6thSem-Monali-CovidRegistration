@@ -18,6 +18,13 @@ CREATE TABLE `covid19donor`.`member` (
   PRIMARY KEY (`memberId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `covid19donor`.`credentials` (
+  `userId` varchar(50) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  `memberId` int NOT NULL,
+  PRIMARY KEY (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `covid19donor`.`donors` (
   `iddonors` int NOT NULL,
   `memberId` int NOT NULL,
