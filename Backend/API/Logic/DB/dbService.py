@@ -3,71 +3,49 @@ from mysql.connector.errors import Error
 import datetime
 
 def isProd():
-      return False
+      return True
 
 def openConnection():
       if isProd():
-            setToProdDB()
             mydb = mysql.connector.connect(
                   host="remotemysql.com",
                   user="bKQOoH3XIM",
-                  password="qeGsYrXJzQ"
+                  password="rIFOpdNfuG",
+                  database='bKQOoH3XIM'
             )
             return mydb     
       
       mydb = mysql.connector.connect(
             host="127.0.0.1",
             user="admin",
-            password="password1"
+            password="password1",
+            auth_plugin='mysql_native_password',
+            database='covid19donor'
       )
       return mydb
 
-def setToProdDB():
-      finduserQueryFormat = "SELECT * FROM bKQOoH3XIM.credentials where userId like '{0}' and password like '{1}'"
-      findUserWithIdQuery = "SELECT * FROM bKQOoH3XIM.credentials where memberId like '{0}' or userId like '{1}'"
-      findUserWithIdAndUsernameQuery = "SELECT * FROM bKQOoH3XIM.credentials where userId like %s and memberId like %s"
-      findLastMemberIdQuery = 'select max(memberId) from bKQOoH3XIM.credentials'
-      insertUsersQuery = "INSERT INTO `bKQOoH3XIM`.`credentials` (`userId`, `password`, `memberId`) VALUES (%s, %s, %s)"
-      insertUserProfileQuery = "INSERT INTO `bKQOoH3XIM`.`member` (`memberId`,`name`,`area`,`phoneNumber`,`bloodGroup`,`city`,`isActive`) VALUES (%s,%s,%s,%s,%s,%s,1)"
-      updateUserProfileQuery = "UPDATE `bKQOoH3XIM`.`member` SET `memberId` = %s, `name` = %s, `area` = %s, `phoneNumber` = %s,`bloodGroup` = %s,`city` = %s, `isActive` = 1 WHERE memberId = %s;"
-      findUserRegistrationQuery = "SELECT * FROM bKQOoH3XIM.member where memberId like '{0}'"
-      findUserStatusFromPatient = "SELECT * FROM bKQOoH3XIM.patients where memberId like '{0}' ORDER BY idpatients DESC LIMIT 1"
-      finduserStatusFromDonor = "SELECT * FROM bKQOoH3XIM.donors where memberId like '{0}' ORDER BY iddonors DESC LIMIT 1"
-      findLastDonorId = "SELECT max(iddonors) as id from bKQOoH3XIM.donors"
-      findLastPatientId = "SELECT max(idpatients) as id from bKQOoH3XIM.patients"
-      insertDonorsQuery = "INSERT INTO `bKQOoH3XIM`.`donors` (`iddonors`, `memberId`, `dateOfRequest`) VALUES ('{0}','{1}','{2}');"
-      insertPatientsQuery = "INSERT INTO `bKQOoH3XIM`.`patients` (`idpatients`, `memberId`, `dateOfRequest`) VALUES ('{0}','{1}','{2}');"
-      deletePatientsQuery = "DELETE FROM `bKQOoH3XIM`.`patients` WHERE memberId = '{0}'"
-      deleteDonorsQuery = "DELETE FROM `bKQOoH3XIM`.`donors` WHERE memberId = '{0}'"
-      getAllPatientsQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM bKQOoH3XIM.patients p left join bKQOoH3XIM.member m on p.memberId = m.memberId"
-      getPatientsByIdQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city from bKQOoH3XIM.patients p left join bKQOoH3XIM.member m on p.memberId = m.memberId where p.memberId like '{0}'"
-      getAllPatientsBloodQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city from bKQOoH3XIM.patients p left join bKQOoH3XIM.member m on p.memberId = m.memberId where m.bloodGroup like '{0}'"
-      getAllDonorQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM bKQOoH3XIM.donors p left join bKQOoH3XIM.member m on p.memberId = m.memberId"
-      getDonorsByIdQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city from bKQOoH3XIM.donors p left join bKQOoH3XIM.member m on p.memberId = m.memberId where p.memberId like '{0}'"
-      getAllDonorBloodQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM bKQOoH3XIM.donors p left join bKQOoH3XIM.member m on p.memberId = m.memberId where m.bloodGroup like '{0}'"
-
-finduserQueryFormat = "SELECT * FROM covid19donor.credentials where userId like '{0}' and password like '{1}'"
-findUserWithIdQuery = "SELECT * FROM covid19donor.credentials where memberId like '{0}' or userId like '{1}'"
-findUserWithIdAndUsernameQuery = "SELECT * FROM covid19donor.credentials where userId like %s and memberId like %s"
-findLastMemberIdQuery = 'select max(memberId) from covid19donor.credentials'
-insertUsersQuery = "INSERT INTO `covid19donor`.`credentials` (`userId`, `password`, `memberId`) VALUES (%s, %s, %s)"
-insertUserProfileQuery = "INSERT INTO `covid19donor`.`member` (`memberId`,`name`,`area`,`phoneNumber`,`bloodGroup`,`city`,`isActive`) VALUES (%s,%s,%s,%s,%s,%s,1)"
-updateUserProfileQuery = "UPDATE `covid19donor`.`member` SET `memberId` = %s, `name` = %s, `area` = %s, `phoneNumber` = %s,`bloodGroup` = %s,`city` = %s, `isActive` = 1 WHERE memberId = %s;"
-findUserRegistrationQuery = "SELECT * FROM covid19donor.member where memberId like '{0}'"
-findUserStatusFromPatient = "SELECT * FROM covid19donor.patients where memberId like '{0}' ORDER BY idpatients DESC LIMIT 1"
-finduserStatusFromDonor = "SELECT * FROM covid19donor.donors where memberId like '{0}' ORDER BY iddonors DESC LIMIT 1"
-findLastDonorId = "SELECT max(iddonors) as id from covid19donor.donors"
-findLastPatientId = "SELECT max(idpatients) as id from covid19donor.patients"
-insertDonorsQuery = "INSERT INTO `covid19donor`.`donors` (`iddonors`, `memberId`, `dateOfRequest`) VALUES ('{0}','{1}','{2}');"
-insertPatientsQuery = "INSERT INTO `covid19donor`.`patients` (`idpatients`, `memberId`, `dateOfRequest`) VALUES ('{0}','{1}','{2}');"
-deletePatientsQuery = "DELETE FROM `covid19donor`.`patients` WHERE memberId = '{0}'"
-deleteDonorsQuery = "DELETE FROM `covid19donor`.`donors` WHERE memberId = '{0}'"
-getAllPatientsQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM covid19donor.patients p left join covid19donor.member m on p.memberId = m.memberId"
-getPatientsByIdQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city from covid19donor.patients p left join covid19donor.member m on p.memberId = m.memberId where p.memberId like '{0}'"
-getAllPatientsBloodQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city from covid19donor.patients p left join covid19donor.member m on p.memberId = m.memberId where m.bloodGroup like '{0}'"
-getAllDonorQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM covid19donor.donors p left join covid19donor.member m on p.memberId = m.memberId"
-getDonorsByIdQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city from covid19donor.donors p left join covid19donor.member m on p.memberId = m.memberId where p.memberId like '{0}'"
-getAllDonorBloodQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM covid19donor.donors p left join covid19donor.member m on p.memberId = m.memberId where m.bloodGroup like '{0}'"
+finduserQueryFormat = "SELECT * FROM credentials where userId like '{0}' and password like '{1}'"
+findUserWithIdQuery = "SELECT * FROM credentials where memberId like '{0}' or userId like '{1}'"
+findUserWithIdAndUsernameQuery = "SELECT * FROM credentials where userId like %s and memberId like %s"
+findLastMemberIdQuery = 'select max(memberId) from credentials'
+insertUsersQuery = "INSERT INTO `credentials` (`userId`, `password`, `memberId`) VALUES (%s, %s, %s)"
+insertUserProfileQuery = "INSERT INTO `member` (`memberId`,`name`,`area`,`phoneNumber`,`bloodGroup`,`city`,`isActive`) VALUES (%s,%s,%s,%s,%s,%s,1)"
+updateUserProfileQuery = "UPDATE `member` SET `memberId` = %s, `name` = %s, `area` = %s, `phoneNumber` = %s,`bloodGroup` = %s,`city` = %s, `isActive` = 1 WHERE memberId = %s;"
+findUserRegistrationQuery = "SELECT * FROM member where memberId like '{0}'"
+findUserStatusFromPatient = "SELECT * FROM patients where memberId like '{0}' ORDER BY idpatients DESC LIMIT 1"
+finduserStatusFromDonor = "SELECT * FROM donors where memberId like '{0}' ORDER BY iddonors DESC LIMIT 1"
+findLastDonorId = "SELECT max(iddonors) as id from donors"
+findLastPatientId = "SELECT max(idpatients) as id from patients"
+insertDonorsQuery = "INSERT INTO `donors` (`iddonors`, `memberId`, `dateOfRequest`) VALUES ('{0}','{1}','{2}');"
+insertPatientsQuery = "INSERT INTO `patients` (`idpatients`, `memberId`, `dateOfRequest`) VALUES ('{0}','{1}','{2}');"
+deletePatientsQuery = "DELETE FROM `patients` WHERE memberId = '{0}'"
+deleteDonorsQuery = "DELETE FROM `donors` WHERE memberId = '{0}'"
+getAllPatientsQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM patients p left join member m on p.memberId = m.memberId"
+getPatientsByIdQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city from patients p left join member m on p.memberId = m.memberId where p.memberId like '{0}'"
+getAllPatientsBloodQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city from patients p left join member m on p.memberId = m.memberId where m.bloodGroup like '{0}'"
+getAllDonorQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM donors p left join member m on p.memberId = m.memberId"
+getDonorsByIdQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city from donors p left join member m on p.memberId = m.memberId where p.memberId like '{0}'"
+getAllDonorBloodQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM donors p left join member m on p.memberId = m.memberId where m.bloodGroup like '{0}'"
 
 def FindUser(username, password):
       mydb = openConnection()
