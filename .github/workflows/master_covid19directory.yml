@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - master
+      - dev
   workflow_dispatch:
 
 jobs:
@@ -24,6 +25,7 @@ jobs:
 
     - name: Create and start virtual environment
       run: |
+        pwd
         python -m venv venv
         source venv/bin/activate
 
