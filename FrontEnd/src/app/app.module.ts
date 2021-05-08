@@ -13,6 +13,8 @@ import { HomeComponent } from './home/home.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
+import { HttpClientModule } from '@angular/common/http';
+import { PatientsModule } from './patients/patients.module';
 
 
 @NgModule({
@@ -35,7 +37,9 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
     BrowserAnimationsModule,
     MaterialModule,
     FlexLayoutModule,
-    MatSidenavModule
+    MatSidenavModule,
+    HttpClientModule,
+    PatientsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

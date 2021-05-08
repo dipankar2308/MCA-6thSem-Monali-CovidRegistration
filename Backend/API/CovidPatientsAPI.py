@@ -69,12 +69,12 @@ def updateProfile(username):
 
 @app.route('/user/profile/<username>', methods=['GET'])
 def getUserProfile(username):
-    requestUsername = json.loads(request.data)
+    requestUsername = request.args.get('userId')
 
-    if isStringNullorEmpty(str(requestUsername['userId'])):
+    if isStringNullorEmpty(requestUsername):
         return jsonify({"message": "ID parameter is missing from the Request Body"})
 
-    profileResponse = userDetails.GetProfile(username, requestUsername['userId'])
+    profileResponse = userDetails.GetProfile(username, requestUsername)
 
     if profileResponse['success']:
         return profileResponse
@@ -83,15 +83,15 @@ def getUserProfile(username):
 
 @app.route('/user/profile/<username>/status', methods=['GET'])
 def getMemberStatus(username):
-    requestData = json.loads(request.data)
+    requestData = request.args.get('userId')
 
-    if requestData['userId'] == None or isStringNullorEmpty(str(requestData['userId'])):
+    if isStringNullorEmpty(requestData):
         return jsonify({
             "success": False,
             "message": "userId is missing in the request"
         }), 400
 
-    result = userStatus.getuserStatusInformation(username, requestData['userId'])
+    result = userStatus.getuserStatusInformation(username, requestData)
 
     return jsonify(result)
 
@@ -120,113 +120,107 @@ def setMemberStatus(username):
 
 @app.route('/patients', methods= ['GET'])
 def getAllPatients():
-    requestData = json.loads(request.data)
+    userId = request.args.get('userId')
+    username = request.args.get('username')
 
-    if ('userId' not in requestData or 
-        isStringNullorEmpty(str(requestData['userId'])) or 
-        'username' not in requestData or 
-        isStringNullorEmpty(str(requestData['username']))):
+    if (isStringNullorEmpty(userId) or 
+        isStringNullorEmpty(username)):
             return jsonify({
                 "success": False,
                 "message": 'One or more request parameters missing in request'
             }), 400
 
-    result = data.GetAllPatients(requestData['username'], requestData['userId'])
+    result = data.GetAllPatients(username, userId)
     return jsonify(result)
 
 @app.route('/patients/<bloodGroup>', methods= ['GET'])
 def getAllPatientsWithGroup(bloodGroup):
-    requestData = json.loads(request.data)
+    userId = request.args.get('userId')
+    username = request.args.get('username')
 
-    if ('userId' not in requestData or 
-        isStringNullorEmpty(str(requestData['userId'])) or 
-        'username' not in requestData or 
-        isStringNullorEmpty(str(requestData['username']))):
+    if (isStringNullorEmpty(userId) or 
+        isStringNullorEmpty(username)):
             return jsonify({
                 "success": False,
                 "message": 'One or more request parameters missing in request'
             }), 400
 
-    result = data.GetAllPatientsWithGroup(requestData['username'], requestData['userId'], bloodGroup)
+    result = data.GetAllPatientsWithGroup(username, userId, bloodGroup)
     return jsonify(result)
 
 @app.route('/patients/profile/<id>', methods=['GET'])
 def getPatientProfileById(id):
-    requestData = json.loads(request.data)
+    username = request.args.get('username')
+    userId = request.args.get('userId')
 
-    if ('userId' not in requestData or 
-        isStringNullorEmpty(str(requestData['userId'])) or 
-        'username' not in requestData or 
-        isStringNullorEmpty(str(requestData['username']))):
+    if (isStringNullorEmpty(str(id)) or 
+        isStringNullorEmpty(username) or 
+        isStringNullorEmpty(userId)):
             return jsonify({
                 "success": False,
                 "message": 'One or more request parameters missing in request'
             }), 400
 
-    result = data.GetAllPatientsWithId(str(requestData['username']), str(requestData['userId']), id)
+    result = data.GetAllPatientsWithId(username, userId, id)
     return jsonify(result)
 
 @app.route('/data/bloodGroups', methods=['GET'])
 def getAllBloodGroups():
-    requestData = json.loads(request.data)
+    username = request.args.get('username')
+    userId = request.args.get('userId')
 
-    if ('userId' not in requestData or 
-        isStringNullorEmpty(str(requestData['userId'])) or 
-        'username' not in requestData or 
-        isStringNullorEmpty(str(requestData['username']))):
+    if (isStringNullorEmpty(str(userId)) or 
+        isStringNullorEmpty(username)):
             return jsonify({
                 "success": False,
                 "message": 'One or more request parameters missing in request'
             }), 400
     
-    return jsonify(data.getAllBloodGroups(requestData['username'], requestData['userId']))
+    return jsonify(data.getAllBloodGroups(username, userId))
 
 @app.route('/donors', methods= ['GET'])
 def getAllDonors():
-    requestData = json.loads(request.data)
+    username = request.args.get('username')
+    userId = request.args.get('userId')
 
-    if ('userId' not in requestData or 
-        isStringNullorEmpty(str(requestData['userId'])) or 
-        'username' not in requestData or 
-        isStringNullorEmpty(str(requestData['username']))):
+    if (isStringNullorEmpty(userId) or 
+        isStringNullorEmpty(username)):
             return jsonify({
                 "success": False,
                 "message": 'One or more request parameters missing in request'
             })
 
-    result = data.GetAllDonors(requestData['username'], requestData['userId'])
+    result = data.GetAllDonors(username, userId)
     return jsonify(result)
 
 @app.route('/donors/<bloodGroup>', methods= ['GET'])
 def getAllDonorsWithGroup(bloodGroup):
-    requestData = json.loads(request.data)
+    username = request.args.get('username')
+    userId = request.args.get('userId')
 
-    if ('userId' not in requestData or 
-        isStringNullorEmpty(str(requestData['userId'])) or 
-        'username' not in requestData or 
-        isStringNullorEmpty(str(requestData['username']))):
+    if (isStringNullorEmpty(userId) or 
+        isStringNullorEmpty(username)):
             return jsonify({
                 "success": False,
                 "message": 'One or more request parameters missing in request'
             })
 
-    result = data.GetAllDonorsWithGroup(requestData['username'], requestData['userId'], bloodGroup)
+    result = data.GetAllDonorsWithGroup(username, userId, bloodGroup)
     return jsonify(result)
 
 @app.route('/donors/profile/<id>', methods=['GET'])
 def getDonorProfileById(id):
-    requestData = json.loads(request.data)
+    username = request.args.get('username')
+    userId = request.args.get('userId')
 
-    if ('userId' not in requestData or 
-        isStringNullorEmpty(str(requestData['userId'])) or 
-        'username' not in requestData or 
-        isStringNullorEmpty(str(requestData['username']))):
+    if (isStringNullorEmpty(userId) or 
+        isStringNullorEmpty(username)):
             return jsonify({
                 "success": False,
                 "message": 'One or more request parameters missing in request'
-            }), 400
+            })
 
-    result = data.GetAllDonorsWithId(str(requestData['username']), str(requestData['userId']), id)
+    result = data.GetAllDonorsWithId(username, userId, id)
     return jsonify(result)
 
 def isStringNullorEmpty(str):
