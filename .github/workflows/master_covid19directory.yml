@@ -14,8 +14,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./Backend/API
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./Backend/API
 
     steps:
     - uses: actions/checkout@v2
