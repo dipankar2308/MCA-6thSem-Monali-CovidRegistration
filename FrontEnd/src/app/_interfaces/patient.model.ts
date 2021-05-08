@@ -1,7 +1,7 @@
 export interface Patient{
-    id: string;
+    userId: string;
     name: string;
     area: string;
-    city: Date;
+    city: string;
     bloodGroup: string;
 }

@@ -9,12 +9,6 @@ export class RepositoryService {
   public getData = (route: string) => {
     return this.http.get(this.createCompleteRoute(route, environment.urlAddress));
   }
-
-  public getDataSecure = (route: string) => {
-    return this.http.get(this.createCompleteRoute(route, environment.urlAddress), {
-      
-    })
-  }
  
   public create = (route: string, body) => {
     return this.http.post(this.createCompleteRoute(route, environment.urlAddress), body, this.generateHeaders());
