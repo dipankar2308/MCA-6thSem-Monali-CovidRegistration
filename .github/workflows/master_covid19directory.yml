@@ -14,6 +14,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./Backend/API
 
     steps:
     - uses: actions/checkout@v2
@@ -26,7 +28,6 @@ jobs:
     - name: Create and start virtual environment
       run: |
         pwd
-        cd ./Backend/API
         python -m venv venv
         source venv/bin/activate
         pip install -r requirements.txt
@@ -38,7 +39,7 @@ jobs:
       with:
         name: CovidPatientsAPI-app
         path: |
-          .
+          ./Backend/API
           !venv/
 
   deploy:
