@@ -11,7 +11,7 @@ CORS(app)
 
 @app.route("/")
 def hello():
-    return jsonify({'result': "Hello World!"})
+    return jsonify({'result': "This is the API backend for COVID 19 directory for Rourkela, Odisha developed by Monali Sutradhar, MCA 6th Sem, RIMS."})
 
 @app.route('/user/auth/login', methods=['POST'])
 def loginMember():
