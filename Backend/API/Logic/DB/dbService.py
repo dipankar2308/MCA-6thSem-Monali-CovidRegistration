@@ -3,7 +3,7 @@ from mysql.connector.errors import Error
 import datetime
 
 def isProd():
-      return False
+      return True
 
 def openConnection():
       if isProd():

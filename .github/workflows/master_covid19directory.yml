@@ -41,7 +41,7 @@ jobs:
       with:
         name: CovidPatientsAPI-app
         path: |
-          ./Backend/API
+          .
           !venv/
 
   deploy:
