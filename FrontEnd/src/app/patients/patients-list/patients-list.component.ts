@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class PatientsListComponent implements OnInit, AfterViewInit {
 
-  public displayedColumns = ['name', 'city', 'area', 'bloodGroup', 'details', 'update', 'delete'];
+  public displayedColumns = ['name', 'city', 'area', 'bloodGroup', 'details', 'update'];
   public dataSource = new MatTableDataSource<Patient>();
 
   @ViewChild(MatSort) sort: MatSort;
@@ -38,10 +38,18 @@ export class PatientsListComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
 
+  public redirectToDetails = (memberId: string) => {
+
+  }
+
   public getAllPatients = () => {
-    this.repoService.getData('patients?userId=2&username=dipankar')
+
+    var userId = localStorage.getItem('userId');
+    var username = localStorage.getItem('username');
+    this.repoService.getData(`patients?userId=${userId}&username=${username}`)
       .subscribe(res => {
         res = res['patients']
+        console.log(res);
         this.dataSource.data = res as Patient[];
       })
   }

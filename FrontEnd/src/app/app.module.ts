@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common'; 
 import { NgModule } from '@angular/core'; 
-import { FormsModule } from '@angular/forms'; 
 import { MatListModule } from '@angular/material/list';  
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +14,11 @@ import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PatientsModule } from './patients/patients.module';
+import { RepositoryService } from "./shared/repository.service";
+import { LoginComponent } from './authentication/login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NotFoundComponent } from './error-pages/not-found/not-found.component';
+import { MenuComponent } from './menu/menu.component';
 
 
 @NgModule({
@@ -23,7 +27,9 @@ import { PatientsModule } from './patients/patients.module';
     LayoutComponent,
     HomeComponent,
     HeaderComponent,
-    SidenavListComponent
+    SidenavListComponent,
+    NotFoundComponent,
+    MenuComponent,
   ],
   exports: [
     AppComponent
@@ -39,7 +45,8 @@ import { PatientsModule } from './patients/patients.module';
     FlexLayoutModule,
     MatSidenavModule,
     HttpClientModule,
-    PatientsModule
+    PatientsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,2 +1,2 @@
-from Backend.API.CovidPatientsAPI import app
+from CovidPatientsAPI import app
 app = app
