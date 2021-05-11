@@ -19,6 +19,7 @@ import { LoginComponent } from './authentication/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotFoundComponent } from './error-pages/not-found/not-found.component';
 import { MenuComponent } from './menu/menu.component';
+import { LandingViewComponent } from './landing-view/landing-view.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { MenuComponent } from './menu/menu.component';
     SidenavListComponent,
     NotFoundComponent,
     MenuComponent,
+    LandingViewComponent,
   ],
   exports: [
     AppComponent

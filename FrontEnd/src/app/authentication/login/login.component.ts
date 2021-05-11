@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
        this._router.navigate([this._returnUrl]);
     },
     (error) => {
-      this.errorMessage = error;
+      this.errorMessage = "There was an error logging in with given credentials. Please try again.";
       this.showError = true;
     })
   }

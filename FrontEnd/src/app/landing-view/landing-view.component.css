@@ -1,0 +1,15 @@
+.example-card {
+    max-width: 500px;
+    align-self: center;
+}
+
+.example-header-image {
+    background-image: url('https://scontent.fpnq3-1.fna.fbcdn.net/v/t1.6435-9/139162702_538653867395706_8044057146061691076_n.jpg?_nc_cat=103&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=rRBFdmT5LxMAX9OIsMe&_nc_oc=AQnkkT_9sd6gf7Ap2XdYblOo1ilrk0w7zk6ukIp7UYgzCgy8xFA29Q8XhIOsQky04Yo&_nc_ht=scontent.fpnq3-1.fna&oh=8d141bcec808a43196d30f8a3df5051e&oe=60BE917C');
+    background-size: cover;
+}
+
+.main-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
