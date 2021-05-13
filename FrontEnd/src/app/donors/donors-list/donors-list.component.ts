@@ -1,37 +1,31 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { Patient } from "./../../_interfaces/patient.model";
 import { MatTableDataSource } from '@angular/material/table';
 import { RepositoryService } from './../../shared/repository.service'
 import { MatSort } from '@angular/material/sort'
 import { MatPaginator } from '@angular/material/paginator';
+import { Donor } from './../../_interfaces/donor.model'
 
 @Component({
-  selector: 'app-patients-list',
-  templateUrl: './patients-list.component.html',
-  styleUrls: ['./patients-list.component.css']
+  selector: 'app-donors-list',
+  templateUrl: './donors-list.component.html',
+  styleUrls: ['./donors-list.component.css']
 })
-export class PatientsListComponent implements OnInit, AfterViewInit {
-
+export class DonorsListComponent implements OnInit {
   public displayedColumns = ['name', 'city', 'area', 'bloodGroup', 'details', 'update'];
-  public dataSource = new MatTableDataSource<Patient>();
+  public dataSource = new MatTableDataSource<Donor>();
   public isLoading = false;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private repoService: RepositoryService) { }
+  constructor(private _repoService: RepositoryService) { }
 
   ngOnInit(): void {
-    this.getAllPatients();
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    this.getAllDonors();
   }
 
   public customSort = (param) => {
-    console.log("Sorting changed on patients table", param)
+    console.log("Sorting changed on donors table", param)
   }
 
   public doFilter = (value: string) => {
@@ -39,18 +33,18 @@ export class PatientsListComponent implements OnInit, AfterViewInit {
   }
 
   public redirectToDetails = (memberId: string) => {
-    console.log(`Details for patient id ${memberId} clicked.`)
+    console.log(`Donor details for id:${memberId} clicked`);
   }
 
-  public getAllPatients = () => {
+  public getAllDonors = () => {
     this.isLoading = true;
     var userId = localStorage.getItem('userId');
     var username = localStorage.getItem('username');
-    this.repoService.getData(`patients?userId=${userId}&username=${username}`)
+    this._repoService.getData(`donors?userId=${userId}&username=${username}`)
       .subscribe(res => {
-        res = res['patients']
+        res = res['donors']
         console.log(res);
-        this.dataSource.data = res as Patient[];
+        this.dataSource.data = res as Donor[];
         this.isLoading = false;
       })
   }

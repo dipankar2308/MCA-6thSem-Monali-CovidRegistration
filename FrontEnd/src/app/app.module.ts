@@ -20,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotFoundComponent } from './error-pages/not-found/not-found.component';
 import { MenuComponent } from './menu/menu.component';
 import { LandingViewComponent } from './landing-view/landing-view.component';
+import { DonorsModule } from './donors/donors.module';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { LandingViewComponent } from './landing-view/landing-view.component';
     HttpClientModule,
     PatientsModule,
     ReactiveFormsModule,
+    DonorsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

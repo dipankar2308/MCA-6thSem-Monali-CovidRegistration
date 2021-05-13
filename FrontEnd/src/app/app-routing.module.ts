@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'landing', component: LandingViewComponent },
   { path: 'patients', loadChildren: () => import('./patients/patients.module').then(m => m.PatientsModule), canActivate: [AuthGuard] },
+  { path: 'donors', loadChildren: () => import('./donors/donors.module').then(m => m.DonorsModule), canActivate: [AuthGuard] },
   { path: 'authentication', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
   { path: '404', component: NotFoundComponent },

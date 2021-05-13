@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public onToggleSidenav = () => {
-    console.log("Home clicked");
+    console.log("Sidenavbar clicked");
     this.sidenavToggle.emit();
   }
 

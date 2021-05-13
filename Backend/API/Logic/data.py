@@ -13,7 +13,8 @@ def GetAllPatients(username, id):
             }
         
         return {
-            'success': False
+            'success': True,
+            'patients': []
         }
     elif isUserExists == -1:
         return {
@@ -39,8 +40,8 @@ def GetAllPatientsWithGroup(username, id, bloodGroup):
                 }
             
             return {
-                'success': False,
-                'patients': None
+                'success': True,
+                'patients': []
             }
         elif isUserExists == -1:
             return {
@@ -69,9 +70,9 @@ def GetAllPatientsWithId(username, id, patientId):
             }
         
         return {
-            'success': False,
-            'patients': False
-        }
+                'success': True,
+                'patients': []
+            }
     elif isUserExists == -1:
         return {
             "success": False,
@@ -94,7 +95,8 @@ def GetAllDonors(username, id):
             }
         
         return {
-            'success': False
+            'success': True,
+            'donors': []
         }
     elif isUserExists == -1:
         return {
@@ -119,8 +121,8 @@ def GetAllDonorsWithGroup(username, id, bloodGroup):
                 }
             
             return {
-                'success': False,
-                'donors': False
+                'success': True,
+                'donors': []
             }
         elif isUserExists == -1:
             return {
@@ -149,9 +151,9 @@ def GetAllDonorsWithId(username, id, donorId):
             }
         
         return {
-            'success': False,
-            'donors': False
-        }
+                'success': True,
+                'donors': []
+            }
     elif isUserExists == -1:
         return {
             "success": False,
