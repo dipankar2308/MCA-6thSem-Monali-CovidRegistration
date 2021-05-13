@@ -14,8 +14,6 @@ import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PatientsModule } from './patients/patients.module';
-import { RepositoryService } from "./shared/repository.service";
-import { LoginComponent } from './authentication/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotFoundComponent } from './error-pages/not-found/not-found.component';
 import { MenuComponent } from './menu/menu.component';

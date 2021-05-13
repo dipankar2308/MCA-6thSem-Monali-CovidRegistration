@@ -42,6 +42,10 @@ export class PatientsListComponent implements OnInit, AfterViewInit {
     console.log(`Details for patient id ${memberId} clicked.`)
   }
 
+  public redirectToUpdate = (memberId: string) => {
+    console.log(`Update for patient id ${memberId} clicked.`)
+  }
+
   public getAllPatients = () => {
     this.isLoading = true;
     var userId = localStorage.getItem('userId');
