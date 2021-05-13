@@ -164,20 +164,9 @@ def GetAllDonorsWithId(username, id, donorId):
             "message": "Username and userId fields are mismatched."
         }
 
-def getAllBloodGroups(username, id):
-    isUserExists = dbService.FindUserWithID(username, id)
-    if isUserExists == 1:
-        results = bloodGroupValidator.GetAllBloodGroups()
-        return {
-                'success': True,
-                'bloodGroups': results['bloodGroups']
-            }
-    elif isUserExists == -1:
-        return {
-            "success": False,
-            "message": "No records in credentials found."
-        }
+def getAllBloodGroups():
+    results = bloodGroupValidator.GetAllBloodGroups()
     return {
-            "success": False,
-            "message": "Username and userId fields are mismatched."
+            'success': True,
+            'bloodGroups': results['bloodGroups']
         }

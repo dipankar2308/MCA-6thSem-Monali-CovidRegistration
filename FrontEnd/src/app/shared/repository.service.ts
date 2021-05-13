@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../environments/environment';
+import { bloodGroups } from '../_interfaces/responses/bloodGroupsResponse.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -8,6 +9,10 @@ export class RepositoryService {
   constructor(private http: HttpClient) { }
   public getData = (route: string) => {
     return this.http.get(this.createCompleteRoute(route, environment.urlAddress));
+  }
+
+  public getBloodGroups = (route: string) => {
+    return this.http.get<bloodGroups>(this.createCompleteRoute(route, environment.urlAddress));
   }
  
   public create = (route: string, body) => {

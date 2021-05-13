@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common'; 
-import { NgModule } from '@angular/core'; 
-import { MatListModule } from '@angular/material/list';  
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatListModule } from '@angular/material/list';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +19,9 @@ import { NotFoundComponent } from './error-pages/not-found/not-found.component';
 import { MenuComponent } from './menu/menu.component';
 import { LandingViewComponent } from './landing-view/landing-view.component';
 import { DonorsModule } from './donors/donors.module';
+import { AuthenticationModule } from './authentication/authentication.module'
+import { LoginComponent } from './authentication/login/login.component';
+import { RegisterUserComponent } from './authentication/register-user/register-user.component';
 
 
 @NgModule({
@@ -31,13 +34,15 @@ import { DonorsModule } from './donors/donors.module';
     NotFoundComponent,
     MenuComponent,
     LandingViewComponent,
+    RegisterUserComponent, 
+    LoginComponent
   ],
   exports: [
     AppComponent
   ],
   imports: [
-    CommonModule, 
-    FormsModule, 
+    CommonModule,
+    FormsModule,
     MatListModule,
     BrowserModule,
     AppRoutingModule,
@@ -48,7 +53,7 @@ import { DonorsModule } from './donors/donors.module';
     HttpClientModule,
     PatientsModule,
     ReactiveFormsModule,
-    DonorsModule,
+    DonorsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

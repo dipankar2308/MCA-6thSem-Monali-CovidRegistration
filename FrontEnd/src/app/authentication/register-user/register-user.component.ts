@@ -17,9 +17,11 @@ export class RegisterUserComponent implements OnInit {
   public registerForm: FormGroup;
   public errorMessage: string = '';
   public showError: boolean;
+  public isLoading = false;
+  public bloodGroups = [];
 
   constructor(private _authService: AuthenticationService,
-    // private _passConfValidator: PasswordConfirmationValidatorService,
+    private _passConfValidator: PasswordConfirmationValidatorService,
     private _repositoryService: RepositoryService,
     private _router: Router) { }
 
@@ -27,14 +29,30 @@ export class RegisterUserComponent implements OnInit {
     this.registerForm = new FormGroup({
       username: new FormControl(''),
       area: new FormControl(''),
-      bloodGroup: new FormControl(''),
+      bloodGroup: new FormControl('A+'),
       city: new FormControl(''),
       name: new FormControl(''),
       phoneNumber: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
-      confirm: new FormControl('', [Validators.required])
+      confirm: new FormControl('')
     });
-    // this.registerForm.get('confirm').setValidators([Validators.required, this._passConfValidator.validateConfirmPassword(this.registerForm.get('password'))]);
+
+    this.getBloodGroups();
+    this.registerForm.get('confirm').setValidators([Validators.required, this._passConfValidator.validateConfirmPassword(this.registerForm.get('password'))]);
+  }
+
+  private getBloodGroups = () => {
+    this.isLoading = true;
+    this._repositoryService.getBloodGroups(`data/bloodGroups`).subscribe(res => {
+      if (res.success) {
+        res.bloodGroups.map(group => {
+          console.log(group);
+          this.bloodGroups.push({ item: group, value: group });
+        });
+        console.log(this.bloodGroups);
+      }
+      this.isLoading = false;
+    })
   }
 
   public validateControl = (controlName: string) => {
@@ -51,30 +69,40 @@ export class RegisterUserComponent implements OnInit {
 
     const userForLogin: userForAuthentication = {
       username: formValues.username,
-      password: formValues.userId
+      password: formValues.password
     }
 
-    this._authService.registerUser("api/accounts/registration", userForLogin)
-      .subscribe(_ => {
-        var id = _.memberId;
-        const user: userProfile = {
-          username: formValues.username,
-          userId: id,
-          area: formValues.area,
-          bloodGroup: formValues.bloodGroup,
-          city: formValues.city,
-          name: formValues.name,
-          phoneNumber: formValues.phoneNumber
-        };
+    this._authService.registerUser("user/auth/register", userForLogin)
+      .subscribe(res => {
+        if (res.success) {
+          console.log("User register response: ", res);
 
-        this._repositoryService.create('user/profile/'.concat(user.username), user).subscribe(res => {
-          this._router.navigate(["/authentication/login"]);
-        }, error => {
-          this.errorMessage = error;
+          var id = res.memberId.toString();
+          const user: userProfile = {
+            username: formValues.username,
+            userId: id,
+            area: formValues.area,
+            bloodGroup: formValues.bloodGroup,
+            city: formValues.city,
+            name: formValues.name,
+            phoneNumber: formValues.phoneNumber
+          };
+
+          this._repositoryService.create(`user/profile/${user.username}`, user).subscribe(res => {
+            this._router.navigate(["/authentication/login"]);
+          }, error => {
+            console.log("Error in user registration: ", error);
+            this.errorMessage = error;
+            this.showError = true;
+          })
+        }
+        else {
+          this.errorMessage = res.message;
           this.showError = true;
-        })
+        }
       },
         error => {
+          console.log("Error in user credential registration: ", error);
           this.errorMessage = error;
           this.showError = true;
         });

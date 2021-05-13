@@ -15,7 +15,9 @@ export class AuthenticationService {
   constructor(private _http: HttpClient, private _envUrl: EnvironmentUrlService) { }
 
   public registerUser = (route: string, body: userForAuthentication) => {
-    return this._http.post<AuthResponse>(this.createCompleteRoute(route, this._envUrl.urlAddress), body);
+    var fullURL = this.createCompleteRoute(route, this._envUrl.urlAddress);
+    console.log("Full URL for POST: ", fullURL);
+    return this._http.post<AuthResponse>(fullURL, body);
   }
 
   public loginUser = (route: string, body: userForAuthentication) => {

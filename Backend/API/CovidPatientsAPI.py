@@ -168,18 +168,8 @@ def getPatientProfileById(id):
     return jsonify(result)
 
 @app.route('/data/bloodGroups', methods=['GET'])
-def getAllBloodGroups():
-    username = request.args.get('username')
-    userId = request.args.get('userId')
-
-    if (isStringNullorEmpty(str(userId)) or 
-        isStringNullorEmpty(username)):
-            return jsonify({
-                "success": False,
-                "message": 'One or more request parameters missing in request'
-            }), 400
-    
-    return jsonify(data.getAllBloodGroups(username, userId))
+def getAllBloodGroups():    
+    return jsonify(data.getAllBloodGroups())
 
 @app.route('/donors', methods= ['GET'])
 def getAllDonors():

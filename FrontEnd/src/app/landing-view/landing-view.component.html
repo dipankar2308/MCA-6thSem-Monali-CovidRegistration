@@ -6,22 +6,23 @@
             <mat-card-subtitle>6th Sem, MCA.</mat-card-subtitle>
         </mat-card-header>
         <div class="main-div">
-        <img mat-card-image class="landing-cover-image" src="https://i.ytimg.com/vi/gd18KTRDGjs/maxresdefault.jpg" alt="Photo of Plasma Therapy">
+            <img mat-card-image class="landing-cover-image" src="https://i.ytimg.com/vi/gd18KTRDGjs/maxresdefault.jpg" alt="Photo of Plasma Therapy">
         </div>
         <mat-card-content>
             <p>
                 Blood donated by people who've recovered from COVID-19 has antibodies to the virus that causes it. The donated blood is processed to remove blood cells, leaving behind liquid (plasma) and antibodies. These can be given to people with COVID-19 to boost
                 their ability to fight the virus.
 
-                <br><br>Let 's fight the Virus together.
-                <a *ngIf="!isUserAuthenticated">Register today.</a>
+                <br>Let 's fight the Virus together.<br><br>
+                <a *ngIf="!isUserAuthenticated">Please login to start or register yourself today.</a>
             </p>
         </mat-card-content>
-        <mat-card-actions>
-            <button *ngIf="!isUserAuthenticated" mat-button [routerLink]="['/authentication/login ']">Login</button>
-            <button *ngIf='!isUserAuthenticated' mat-button>Register User</button>
-            <button *ngIf="isUserAuthenticated" mat-button [routerLink]="['/patients/patients']">Patients</button>
-            <button *ngIf="isUserAuthenticated" mat-button [routerLink]="['/donors/donors']">Donors</button>
+        <mat-card-actions class="main-div">
+            <button class='bigButton' *ngIf="!isUserAuthenticated" mat-button [routerLink]="['/authentication/login ']">Login</button>
+            <button class='bigButton' *ngIf='!isUserAuthenticated' mat-button [routerLink]="['/authentication/register']">Register User</button>
+            <button class='bigButton' *ngIf="isUserAuthenticated" mat-button [routerLink]="['/patients/patients']">Patients</button>
+            <button class='bigButton' *ngIf="isUserAuthenticated" mat-button [routerLink]="['/donors/donors']">Donors</button>
+            <button class='bigButton' *ngIf="isUserAuthenticated" mat-button [routerLink]="['/donors/donors']">Update my profile</button>
         </mat-card-actions>
     </mat-card>
 </div>

@@ -8,11 +8,16 @@
 }
 
 .landing-cover-image {
-    max-width: 80%;
+    max-width: 70%;
 }
 
 .main-div {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.bigButton {
+    font-size: large;
+    color: darkslategrey;
 }
