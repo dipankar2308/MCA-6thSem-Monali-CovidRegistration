@@ -105,6 +105,7 @@ def setMemberStatus(username):
     #     "memberStatus": "patient", // status = patient/donor
     # }
     requestData = json.loads(request.data)
+    print(requestData)
 
     if ('userId' not in requestData or 
         requestData['userId'] == None or 

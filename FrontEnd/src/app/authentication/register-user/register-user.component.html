@@ -1,39 +1,34 @@
 <div class="main-div">
-    <div class="card">
-        <div class="card-body">
+    <div>
+        <div>
             <h1 class="card-title">Register yourself here</h1>
-
             <div *ngIf="showError" class="alert alert-danger" role="alert">
                 <span [innerHTML]="errorMessage"></span>
             </div>
 
             <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)">
+                <p>
+                    <mat-form-field appearance="standard">
+                        <mat-label for="username">Username</mat-label>
+                        <input type="text" id="username" formControlName="username" matInput placeholder="Please enter a username" />
+                    </mat-form-field>
+                </p>
+                <mat-form-field appearance="standard">
+                    <mat-label for="name">Name</mat-label>
+                    <input type="text" id="name" formControlName="name" matInput placeholder="Please enter your full name" />
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance="standard">
+                    <mat-label for="area">Area</mat-label>
+                    <input type="text" id="area" formControlName="area" matInput placeholder="Your area of the city" />
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance="standard">
+                    <mat-label for="city">City</mat-label>
+                    <input type="text" id="city" formControlName="city" matInput class="form-control" />
+                </mat-form-field>
                 <div class="form-group row">
-                    <label for="username" class="col-form-label col-sm-2">Username:</label>
-                    <div class="col-md-5">
-                        <input type="text" id="username" formControlName="username" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="name" class="col-form-label col-sm-2">Name:</label>
-                    <div class="col-md-5">
-                        <input type="text" id="name" formControlName="name" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="area" class="col-form-label col-sm-2">Area:</label>
-                    <div class="col-md-5">
-                        <input type="text" id="area" formControlName="area" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="city" class="col-form-label col-sm-2">City:</label>
-                    <div class="col-md-5">
-                        <input type="text" id="city" formControlName="city" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="bloodGroup" class="col-form-label col-sm-2">Blood Group:</label>
+                    <label for="bloodGroup">Blood Group</label>
                     <div class="col-md-5">
                         <select id="bloodGroup" name="bloodGroup" formControlName="bloodGroup">
                             <option *ngFor="let group of bloodGroups; let i = index" [value]="bloodGroups[i].item">
@@ -42,37 +37,37 @@
                         </select>
                     </div>
                 </div>
+                <br>
                 <div class="form-group row">
-                    <label for="phoneNumber" class="col-form-label col-sm-2">PhoneNumber:</label>
+                    <label for="memberStatus">Current Status</label>
                     <div class="col-md-5">
-                        <input type="tel" id="phoneNumber" formControlName="phoneNumber" class="form-control" />
-                    </div>
-                    <div class="col-md-5">
-                        <em *ngIf="validateControl('phoneNumber') && hasError('phoneNumber', 'required')">Phone number is
-                            required</em>
+                        <select id="memberStatus" name="memberStatus" formControlName="memberStatus">
+                            <option value="patient" selected>Patient</option>
+                            <option value="donor">Donor</option>
+                        </select>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="password" class="col-form-label col-sm-2">Password:</label>
-                    <div class="col-md-5">
-                        <input type="password" id="password" formControlName="password" class="form-control" />
-                    </div>
-                    <div class="col-md-5">
-                        <em *ngIf="validateControl('password') && hasError('password', 'required')">Password is
-                            required</em>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="confirm" class="col-form-label col-sm-2">Confirm Password:</label>
-                    <div class="col-md-5">
-                        <input type="password" id="confirm" formControlName="confirm" class="form-control" />
-                    </div>
-                    <div class="col-md-5">
-                        <em *ngIf="validateControl('confirm') && hasError('confirm', 'required')">Confirmation is
-                            required</em>
-                        <em *ngIf="hasError('confirm', 'mustMatch')">Passwords must match</em>
-                    </div>
-                </div>
+                <mat-form-field appearance="standard">
+                    <mat-label for="phoneNumber">PhoneNumber</mat-label>
+                    <input type="tel" id="phoneNumber" matInput formControlName="phoneNumber" placeholder="Phone number" />
+                    <em *ngIf="validateControl('phoneNumber') && hasError('phoneNumber', 'required')">Phone number is
+                        required</em>
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance="standard">
+                    <mat-label for="password">Password</mat-label>
+                    <input type="password" id="password" formControlName="password" matInput placeholder="enter password" />
+                    <em *ngIf="validateControl('password') && hasError('password', 'required')">Password is
+                        required</em>
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance="standard">
+                    <mat-label for="confirm">Confirm Password</mat-label>
+                    <input type="password" id="confirm" formControlName="confirm" matInput placeholder="confirm password" />
+                    <em *ngIf="validateControl('confirm') && hasError('confirm', 'required')">Confirmation is
+                        required</em>
+                    <em *ngIf="hasError('confirm', 'mustMatch')">Passwords must match</em>
+                </mat-form-field>
                 <br>
                 <div class="form-group row">
                     <div class="col-md-1">
