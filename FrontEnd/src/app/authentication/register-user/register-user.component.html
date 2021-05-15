@@ -1,12 +1,16 @@
 <div class="main-div">
     <div>
-        <div>
+        <div class="example-form">
             <h1 class="card-title">Register yourself here</h1>
             <div *ngIf="showError" class="alert alert-danger" role="alert">
                 <span [innerHTML]="errorMessage"></span>
             </div>
 
-            <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)">
+            <div fxLayout fxLayoutAlign="center center">
+                <mat-spinner *ngIf="isLoading"></mat-spinner>
+            </div>
+
+            <form [formGroup]="registerForm" *ngIf="!isLoading" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)">
                 <p>
                     <mat-form-field appearance="standard">
                         <mat-label for="username">Username</mat-label>
@@ -29,7 +33,7 @@
                 </mat-form-field>
                 <div class="form-group row">
                     <label for="bloodGroup">Blood Group</label>
-                    <div class="col-md-5">
+                    <div>
                         <select id="bloodGroup" name="bloodGroup" formControlName="bloodGroup">
                             <option *ngFor="let group of bloodGroups; let i = index" [value]="bloodGroups[i].item">
                                 {{group.value}}

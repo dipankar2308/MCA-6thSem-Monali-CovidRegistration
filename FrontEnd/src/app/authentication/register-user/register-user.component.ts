@@ -19,7 +19,7 @@ export class RegisterUserComponent implements OnInit {
   public registerForm: FormGroup;
   public errorMessage: string = '';
   public showError: boolean;
-  public isLoading = false;
+  public isLoading = true;
   public bloodGroups = [];
 
   constructor(private _authService: AuthenticationService,
@@ -41,7 +41,6 @@ export class RegisterUserComponent implements OnInit {
       password: new FormControl('', [Validators.required]),
       confirm: new FormControl('')
     });
-
     this.getBloodGroups();
     this.registerForm.get('confirm').setValidators([Validators.required, this._passConfValidator.validateConfirmPassword(this.registerForm.get('password'))]);
   }
