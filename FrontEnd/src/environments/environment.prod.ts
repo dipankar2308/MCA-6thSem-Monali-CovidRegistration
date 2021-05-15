@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  urlAddress: 'http://localhost:5000'
+  urlAddress: 'https://covid19directory.azurewebsites.net/produc'
 };
