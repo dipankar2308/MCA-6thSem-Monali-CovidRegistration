@@ -1,28 +1,7 @@
 import mysql.connector
 from mysql.connector.errors import Error
+from Logic.DB import dbConnection
 import datetime
-
-def isProd():
-      return True
-
-def openConnection():
-      if isProd():
-            mydb = mysql.connector.connect(
-                  host="remotemysql.com",
-                  user="bKQOoH3XIM",
-                  password="rIFOpdNfuG",
-                  database='bKQOoH3XIM'
-            )
-            return mydb     
-      
-      mydb = mysql.connector.connect(
-            host="127.0.0.1",
-            user="admin",
-            password="password1",
-            auth_plugin='mysql_native_password',
-            database='covid19donor'
-      )
-      return mydb
 
 finduserQueryFormat = "SELECT * FROM credentials where userId like '{0}' and password like '{1}'"
 findUserWithIdQuery = "SELECT * FROM credentials where memberId like '{0}' or userId like '{1}'"
@@ -48,7 +27,7 @@ getDonorsByIdQuery = "SELECT p.memberid as userId, m.name as name, m.area as are
 getAllDonorBloodQuery = "SELECT p.memberid as userId, m.name as name, m.area as area, m.bloodgroup as bloodgroup, m.city as city FROM donors p left join member m on p.memberId = m.memberId where m.bloodGroup like '{0}'"
 
 def FindUser(username, password):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
 
       userQueryFormat = finduserQueryFormat
@@ -65,7 +44,7 @@ def FindUser(username, password):
       return -1
 
 def FindUserWithID(username, id):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       myCursor = mydb.cursor()
 
       print(findUserWithIdQuery.format(id, username))
@@ -94,7 +73,7 @@ def FindUserWithID(username, id):
             return 0
 
 def RegisterUserInDB(username, password):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
 
       findRecentMemberIdFormat = findLastMemberIdQuery
@@ -129,7 +108,7 @@ def RegisterUserInDB(username, password):
       return latestUserId
 
 def AddUserProfile(userId, username, name, area, city, phoneNumber, bloodGroup):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
       values = (userId, name, area, phoneNumber, bloodGroup, city)
       try:
@@ -147,7 +126,7 @@ def AddUserProfile(userId, username, name, area, city, phoneNumber, bloodGroup):
       return True
 
 def UpdateProfile(id, username, name, area, city, phoneNumber, bloodGroup):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
 
       values = (id, name, area, phoneNumber, bloodGroup, city, id)
@@ -167,7 +146,7 @@ def UpdateProfile(id, username, name, area, city, phoneNumber, bloodGroup):
       return True
 
 def FindUserRegistration(id):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
       print("userId: {0}".format(id))
 
@@ -196,7 +175,7 @@ def FindUserRegistration(id):
 
 # Get the current user status whether patient or donor
 def GetUserStatus(userId):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       myCursor = mydb.cursor()
 
       try:
@@ -232,7 +211,7 @@ def GetUserStatus(userId):
 
 #Get All Patients
 def GetAllPatients():
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
       patients = []
       
@@ -264,7 +243,7 @@ def GetAllPatients():
 
 #Get All Patients of Blood Group
 def GetAllPatientsWithGroup(bloodGroup):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
       patients = []
       
@@ -295,7 +274,7 @@ def GetAllPatientsWithGroup(bloodGroup):
       return patients
 
 def GetAllPatientsWithId(id):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
       donors = []
       
@@ -324,7 +303,7 @@ def GetAllPatientsWithId(id):
 
 #Get All Donors
 def GetAllDonors():
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
       donors = []
       
@@ -353,7 +332,7 @@ def GetAllDonors():
 
 #Get All Donors of Blood Group
 def GetAllDonorsWithGroup(bloodGroup):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
       donors = []
       
@@ -382,7 +361,7 @@ def GetAllDonorsWithGroup(bloodGroup):
 
 #Get All Donors of Blood Group
 def GetAllDonorsWithId(id):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
       donors = []
       
@@ -411,7 +390,7 @@ def GetAllDonorsWithId(id):
 
 # Set the current user status as patient
 def SetUserStatusPatient(userId):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
 
       findRecentMemberIdFormat = findLastPatientId
@@ -453,7 +432,7 @@ def SetUserStatusPatient(userId):
 
 # Set the current user status as Donor
 def SetUserStatusDonor(userId):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
 
       findRecentMemberIdFormat = findLastDonorId
@@ -495,7 +474,7 @@ def SetUserStatusDonor(userId):
       return True
 
 def DeletePatient(userId):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
 
       try:
@@ -518,7 +497,7 @@ def DeletePatient(userId):
       return True
 
 def DeleteDonor(userId):
-      mydb = openConnection()
+      mydb = dbConnection.openConnection()
       mycursor = mydb.cursor()
 
       try:
